@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zia- Telecalling Daily Report Form</title>
+    <link rel="icon" type="image" href="https://ziagroup.org/wp-content/uploads/2023/01/IMG_7866.png">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .employee-form {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+      }
+      textarea,
+      input,
+      select {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 8px;
+      }
+      button {
+        padding: 10px 15px;
+        margin-right: 10px;
+      }
+      .output {
+        white-space: pre-wrap;
+        background: #f9f9f9;
+        padding: 15px;
+        border: 1px dashed #ccc;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="https://ziagroup.org/wp-content/uploads/2023/01/IMG_7866.png" alt="zia"
+    height="100px">
+    <h2>Zia- Telecalling Daily Report</h2>
+    <label>Team Name:</label>
+    <select id="teamName">
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+    </select>
+
+    <label>Date:</label>
+    <input type="date" id="reportDate" />
+
+    <div id="employeeContainer"></div>
+
+    <button onclick="addEmployee()">Add Employee</button>
+    <button onclick="generateReport()">Generate Report</button>
+    <button onclick="copyReport()">Copy Report</button>
+    <button onclick="shareWhatsApp()">Share on WhatsApp</button>
+
+    <div id="output" class="output"></div>
+
+    <script>
+      let employeeCount = 0;
+
+      function formatDate(dateStr) {
+        const [yyyy, mm, dd] = dateStr.split("-");
+        return `${dd}-${mm}-${yyyy}`;
+      }
+
+      function addEmployee() {
+        const container = document.getElementById("employeeContainer");
+        const div = document.createElement("div");
+        div.className = "employee-form";
+        div.id = `employee-${employeeCount}`;
+        div.innerHTML = `
+        <h3>Employee ${employeeCount + 1}</h3>
+        <label>Employee Name:</label>
+        <input type="text" class="employeeName" />
+
+        <label>Login Time:</label>
+        <input type="time" class="loginTime" />
+
+        <label>Logout Time:</label>
+        <input type="time" class="logoutTime" />
+
+        <label>Worked on (Area/Project):</label>
+        <input type="text" class="projectName" />
+
+        <label>Calls Completed:</label>
+        <input type="number" class="calls" />
+
+        <label>Follow-ups Done:</label>
+        <input type="number" class="followUps" />
+
+        <label>Interested Leads:</label>
+        <input type="number" class="interestedLeads" />
+
+        <label>No. of Students Visited Today:</label>
+        <input type="number" class="visitedTodayCount" />
+
+        <label>Students Visited Today (Name - Contact):</label>
+        <textarea class="visitedTodayList"></textarea>
+
+        <label>No. of Students Visiting Tomorrow:</label>
+        <input type="number" class="visitTomorrowCount" />
+
+        <label>Students Visiting Tomorrow (Name - Contact):</label>
+        <textarea class="visitTomorrowList"></textarea>
+
+        <label>No. of Yesterday's Leads:</label>
+        <input type="number" class="yesterdayLeads" />
+
+        <label>Yesterday's Leads (Name - Contact):</label>
+        <textarea class="yesterdayLeadsList"></textarea>
+      `;
+        container.appendChild(div);
+        employeeCount++;
+      }
+
+      function generateReport() {
+        const teamName = document.getElementById("teamName").value;
+        const reportDate = formatDate(
+          document.getElementById("reportDate").value
+        );
+        const container = document.getElementById("employeeContainer");
+        let report = `------- Team Name : ${teamName} -------\n\n`;
+
+        const employees = container.getElementsByClassName("employee-form");
+        Array.from(employees).forEach((emp, idx) => {
+          const name = emp.querySelector(".employeeName").value;
+          const login = emp.querySelector(".loginTime").value;
+          const logout = emp.querySelector(".logoutTime").value;
+          const project = emp.querySelector(".projectName").value;
+          const calls = emp.querySelector(".calls").value;
+          const followUps = emp.querySelector(".followUps").value;
+          const interested = emp.querySelector(".interestedLeads").value;
+          const visitedToday = emp.querySelector(".visitedTodayCount").value;
+          const visitedTodayList = emp.querySelector(".visitedTodayList").value;
+          const visitTomorrow = emp.querySelector(".visitTomorrowCount").value;
+          const visitTomorrowList =
+            emp.querySelector(".visitTomorrowList").value;
+          const yesterday = emp.querySelector(".yesterdayLeads").value;
+          const yesterdayList = emp.querySelector(".yesterdayLeadsList").value;
+
+          report += `_Employee Name_ : *_${name}_*\n📅 _Date_ : *${reportDate}*\n🟢 _Login_ : *${login}*\n🔴 _Logout_ : *${logout}*\n\n`;
+          report += `⦿  _Worked on *${project}* Data_. _Completed *${calls}* calls and *${followUps}* follow ups_.\n`;
+          report += `⦿  _Total No. of Interested leads_ : *${interested}*\n\n`;
+          report += `⦿  _No. of Students Visited today_ : *${visitedToday}*\n⦿  _List of Students Visited today with contact no._ :\n${visitedTodayList}\n \n`;
+          report += `⦿  _No. of Students Visiting Tomorrow_ : *${visitTomorrow}*\n⦿  _List of Students Visiting Tomorrow with contact no._ :\n${visitTomorrowList}\n \n`;
+          report += `⦿  _No. of Yesterday's Leads_ : *${yesterday}*\n⦿  _List of Students Visited Yesterday with contact no._ :\n${yesterdayList}\n \n`;
+          report += `Thanks and Regards,\n*_${name}_*\n----------------------\n\n`;
+        });
+
+        document.getElementById("output").innerText = report;
+      }
+
+      function copyReport() {
+        const text = document.getElementById("output").innerText;
+        navigator.clipboard.writeText(text).then(() => alert("Report copied!"));
+      }
+
+      function shareWhatsApp() {
+        const text = document.getElementById("output").innerText;
+        const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+        window.open(url, "_blank");
+      }
+
+      // Initialize with one employee
+      addEmployee();
+    </script>
+  </body>
+</html>
