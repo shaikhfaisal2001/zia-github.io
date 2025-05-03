@@ -87,7 +87,7 @@
         <label>Worked on (Area/Project):</label>
         <input type="text" class="projectName" />
 
-        <label>Calls Completed:</label>
+        <label>New Calls Completed:</label>
         <input type="number" class="calls" />
 
         <label>Follow-ups Done:</label>
@@ -144,7 +144,7 @@
           const yesterdayList = emp.querySelector(".yesterdayLeadsList").value;
 
           report += `_Employee Name_ : *_${name}_*\n📅 _Date_ : *${reportDate}*\n🟢 _Login_ : *${login}*\n🔴 _Logout_ : *${logout}*\n\n`;
-          report += `⦿  _Worked on *${project}* Data_. _Completed *${calls}* calls and *${followUps}* follow ups_.\n`;
+          report += `⦿  _Worked on *${project}* Data_. _Completed *${calls}* new calls and *${followUps}* follow ups_.\n`;
           report += `⦿  _Total No. of Interested leads_ : *${interested}*\n\n`;
           report += `⦿  _No. of Students Visited today_ : *${visitedToday}*\n⦿  _List of Students Visited today with contact no._ :\n${visitedTodayList}\n \n`;
           report += `⦿  _No. of Students Visiting Tomorrow_ : *${visitTomorrow}*\n⦿  _List of Students Visiting Tomorrow with contact no._ :\n${visitTomorrowList}\n \n`;
@@ -169,5 +169,6 @@
       // Initialize with one employee
       addEmployee();
     </script>
+    <h2>Made with ❤️ by Faisal</h2>
   </body>
 </html>
